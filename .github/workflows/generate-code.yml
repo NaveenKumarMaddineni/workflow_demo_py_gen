@@ -17,13 +17,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Fetch generate_code.py from generator-branch
+      - name: Download pygen wheel from generator-branch
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: build-wheel.yml
+          workflow_conclusion: success
+          branch: generator-branch
+          name: pygen-wheel
+      - name: Install pygen wheel
         run: |
-          git fetch origin generator-branch:generator-branch
-          git checkout generator-branch -- generate_code.py
+          pip install dist/*.whl
       - name: Generate Python code from config
         run: |
-          python generate_code.py
+          python -c "from pygen.generator import generate_code; generate_code('configs/config.json')"
       - name: Commit and push generated file to main branch
         run: |
           git config --global user.name "github-actions"

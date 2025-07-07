@@ -1,0 +1,25 @@
+name: Generate Python Code from Config - Unique Run
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'configs/**'
+      - '.github/workflows/generate-code-unique-run.yml'
+      - 'generate_code.py'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate Python code from config
+        run: |
+          python generate_code.py
+      - name: Show generated code
+        run: |
+          cat generated_code.py

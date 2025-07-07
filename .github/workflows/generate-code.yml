@@ -20,12 +20,13 @@ jobs:
       - name: Generate Python code from config
         run: |
           python generate_code.py
-      - name: Commit and push generated file
+      - name: Commit and push generated file to generated-files branch
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+          git checkout -b generated-files || git checkout generated-files
           git add generated/*.py
           git commit -m "Add generated Python file [skip ci]" || echo "No changes to commit"
-          git push
+          git push --set-upstream origin generated-files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

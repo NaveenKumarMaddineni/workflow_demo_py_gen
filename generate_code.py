@@ -22,7 +22,7 @@ def main():
         f.write('def generated_function():\n')
         for key, value in config.items():
             f.write(f'    print("{key}: {value}")\n')
-
+        f.write('generated_function()\n')
 
 if __name__ == '__main__':
     main()
